@@ -1,0 +1,10 @@
+INSERT INTO telzir.codes(code) VALUES ('011');
+INSERT INTO telzir.codes(code) VALUES ('016');
+INSERT INTO telzir.codes(code) VALUES ('017');
+INSERT INTO telzir.codes(code) VALUES ('018');
+
+
+INSERT INTO telzir.plans(description) VALUES ('FaleMais 30');
+INSERT INTO telzir.plans(description) VALUES ('FaleMais 60');
+INSERT INTO telzir.plans(description) VALUES ('FaleMais 120');
+
