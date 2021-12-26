@@ -25,6 +25,6 @@ Para rodar o frontend:
 dependências do node_modules. Depois execute "yarn start"
 
 ## Tentado a Implementação com swagger para documentar
-Implementei o swagger nesta api porém não tivesse sucesso de rendorizar corretamente porque a api do swagger ta tendo falha com versoes, tentei pesquisar para achar uma solução porém nada concreto.
+Implementei o swagger nesta api, porém não tive sucesso ao rendorizar corretamente porque a api do swagger esta tendo falha com as versoes, tentei fazer várias pesquisas para achar uma solução, porém nada concreto.
 - Link da url local json swagger: http://localhost:5000/swagger.json
 - Link da url local html swagger: http://localhost:5000/index.html
