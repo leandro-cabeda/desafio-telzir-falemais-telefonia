@@ -18,40 +18,54 @@ import {
 } from './styles';
 
 export default class Main extends Component {
+
   state = {
-    origem: '',
-    destino: '',
-    tempo: '',
-    servico: '',
-    precoComFaleMais: '',
-    precoSemFaleMais: '',
+    from: '',
+    to: '',
+    time: '',
+    service: '',
+    priceWithFaleMais: '',
+    priceNoFaleMais: '',
+    code: [],
+    plan: []
   };
 
   handleSubmit = async e => {
     e.preventDefault();
-    const { origem, destino, tempo, servico } = this.state;
+    const { from, to, time, service } = this.state;
 
     const response = await api.post('/', {
-      origem,
-      destino,
-      tempo,
-      servico,
+      from,
+      to,
+      time,
+      service,
     });
 
-    const { precoComFaleMais, precoSemFaleMais } = response.data;
+    const { priceWithFaleMais, priceNoFaleMais } = response.data;
 
     this.setState({
-      precoComFaleMais,
-      precoSemFaleMais,
+      priceWithFaleMais,
+      priceNoFaleMais,
     });
   };
 
-  render() {
+  allCodes = async () => {
+    const { data } = await api.get('/code');
+    this.setState({ code: data });
+  }
 
-    const data = {
-      codigo: ['', '011', '016', '017', '018'],
-      servico: ['', 'FaleMais 30', 'FaleMais 60', 'FaleMais 120'],
-    };
+  allPlans = async () => {
+    const { data } = await api.get('/plan');
+    this.setState({ plan: data });
+  }
+
+  async componentDidMount() {
+    await this.allCodes();
+    await this.allPlans();
+  }
+
+
+  render() {
 
     return (
       <>
@@ -68,52 +82,55 @@ export default class Main extends Component {
                 <img src={author} alt="Autor" width={250} />
               </Header>
               <h3>Leandro Cabeda Rigo</h3>
-              <p>Autor do sistema</p>
-              <h2> Seja bem-vindo!</h2>
-              <p>Veja como suas ligações ficarão mais baratas</p>
+              <p>System Author</p>
+              <h2>Welcome!</h2>
+              <p>See how your calls will be cheaper.</p>
             </FirstContent>
             <SecondContent>
               <Form onSubmit={this.handleSubmit}>
-                <label>Origem: </label>
+                <label>From: </label>
                 <select
                   onChange={e => {
-                    this.setState({ origem: e.target.value });
+                    this.setState({ from: e.target.value });
                   }}
                 >
-                  {data.codigo.map((origem, id) => {
-                    return <option key={id}>{origem}</option>;
+                  <option key='0'></option>;
+                  {this.state.code.map((from, id) => {
+                    return <option key={id}>{from.code}</option>;
                   })}
                 </select>
 
-                <label>Destino: </label>
+                <label>To: </label>
                 <select
                   onChange={e => {
-                    this.setState({ destino: e.target.value });
+                    this.setState({ to: e.target.value });
                   }}
                 >
-                  {data.codigo.map((destino, id) => {
-                    return <option key={id}>{destino}</option>;
+                  <option key='0'></option>;
+                  {this.state.code.map((to, id) => {
+                    return <option key={id}>{to.code}</option>;
                   })}
                 </select>
 
-                <label>Plano: </label>
+                <label>Plan: </label>
                 <select
                   onChange={e => {
-                    this.setState({ servico: e.target.value });
+                    this.setState({ service: e.target.value });
                   }}
                 >
-                  {data.servico.map((servico, id) => {
-                    return <option key={id}>{servico}</option>;
+                  <option key='0'></option>;
+                  {this.state.plan.map((service, id) => {
+                    return <option key={id}>{service.description}</option>;
                   })}
                 </select>
 
-                <label>Tempo: </label>
+                <label>Time: </label>
                 <input
                   type="text"
                   placeholder=" Quantos minutos?"
-                  value={this.state.tempo}
+                  value={this.state.time}
                   onChange={e => {
-                    this.setState({ tempo: e.target.value });
+                    this.setState({ time: e.target.value });
                   }}
                 />
               </Form>
@@ -123,12 +140,12 @@ export default class Main extends Component {
         </Container>
         <Results>
           <h2>
-            <span>Plano -
+            <span>Plan -
               <strong> FALE MAIS</strong>
             </span>
-            : {formatPrice(this.state.precoComFaleMais)}
+            : {formatPrice(this.state.priceWithFaleMais)}
           </h2>
-          <h2>Sem Plano: {formatPrice(this.state.precoSemFaleMais)}</h2>
+          <h2>No Plan: {formatPrice(this.state.priceNoFaleMais)}</h2>
         </Results>
       </>
     );

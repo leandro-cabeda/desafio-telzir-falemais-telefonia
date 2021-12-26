@@ -13,6 +13,11 @@ class App {
   midllewares() {
     this.server.use(express.json());
     this.server.use(cors());
+    this.server.use(express.static("./src/app/api-docs", {
+      index: false,
+      immutable: true,
+      cacheControl: true
+    }));
   }
 
   routes() {
